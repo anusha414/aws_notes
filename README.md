@@ -17,4 +17,23 @@ explain the village and construction example.
 6. If a user wants to access an application that is running inside a instance of the private subnet they cannot do it directly, the request will first go to internet gateway then to the publci subnet and then to the load balancer then via routing table rules defined in it then it goes to the EC2 instances inside the private subnet, again this does not guarantee on fulfulling the user request because there will be Security groups that will block the access.
 7. If u want the resources in Private subnet to acess/download packages from internet we will use NAT gateway with this help we can mask the IP addresses of our private subnet resources to either route tables or load blanacer IP address.
 
-8. 
+8. Security Group:- Security at resource level
+9. Security group has inbound traffic and outbound traffic rules
+10. Inbound traffic:- a user trying to access the application running inside the EC2 instances
+11. Outbound traffic:- the application inside the EC2 tries to access some google.com from internet.
+12. whenever you create a EC2 instance it will be associated with the VPC in the same region as ur EC2 and it will create a SG for ur EC2 instance by default, all Outbound traffic will be allowed by default except for port25 and all inbound traffic is blocked.
+13. NACL(Network access Control List):- security at subnet level
+14. Even if the security is compromised at instance level by the developers maybe they would have given allow all traffic, we can still control the security at subnet level using NACL
+15. Using NACL at subnet level we can specify what kind of traffic we want to deny and what we want to allow, whereas SG is only for allowing traffic.
+16. NACL has priority over SG, less number rule has high priority
+
+    Practical:-
+    1. whenever you create  aVPC, AWS will create a by default, NACL(all allow and all deny) and route table, n SG.
+    2. Internet gateway is visible in the network connections section.
+    3. I have created a EC2 instance with default SG and SSH access in the custom VPC and deployed an application on port 8000, when i try to access the application with the EC2 instance it will not be visible because in default SG in the inbound rules only SSH is allowed(allows us to connect to EC2).
+   
+Ur project references:-
+
+In our project we have created, Security Group with inbound rules source as other security group because IP addresses are not static and the nodes has to communicate with each other and control plane in EKS cluster. these security groups are automatically created and have sefl referencing rules.
+
+NOTE:- whenever a VPC is create a self referencing SG is created, whenever a EKS cluster is created or a node group is created a self referencing SG is created.
