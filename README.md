@@ -26,9 +26,10 @@ explain the village and construction example.
 14. Even if the security is compromised at instance level by the developers maybe they would have given allow all traffic, we can still control the security at subnet level using NACL
 15. Using NACL at subnet level we can specify what kind of traffic we want to deny and what we want to allow, whereas SG is only for allowing traffic.
 16. NACL has priority over SG, less number rule has high priority
+17. VPC endpoints:- If a node in private subnet wants to cumminicate with AWS services so instead of letting it communicate through the internet we will create endpoints.
 
     Practical:-
-    1. whenever you create  aVPC, AWS will create a by default, NACL(all allow and all deny) and route table, n SG.
+    1. whenever you create  a VPC, AWS will create a by default, NACL(all allow and all deny) and route table, n SG.
     2. Internet gateway is visible in the network connections section.
     3. I have created a EC2 instance with default SG and SSH access in the custom VPC and deployed an application on port 8000, when i try to access the application with the EC2 instance it will not be visible because in default SG in the inbound rules only SSH is allowed(allows us to connect to EC2).
    
@@ -36,4 +37,15 @@ Ur project references:-
 
 In our project we have created, Security Group with inbound rules source as other security group because IP addresses are not static and the nodes has to communicate with each other and control plane in EKS cluster. these security groups are automatically created and have sefl referencing rules.
 
-NOTE:- whenever a VPC is create a self referencing SG is created, whenever a EKS cluster is created or a node group is created a self referencing SG is created.
+NOTE:- whenever a VPC is created a self referencing SG is created, whenever a EKS cluster is created or a node group is created a self referencing SG is created.
+
+Important notes for EKS & VPC:-
+
+1. If there is any incoming traffic to any resources in the public subnet like load balancers they must have the inbound rules assigned on that particular port.
+2. If a node on which a pod is assigned has to pull the ECR image then it must have IAM role with neccessary permissions so that the ECR will let the node pull the image.
+3. If a node on which the pod is asigned is in private subnet, then u will get "imgpullbackoff" error because the node does not have access to internet so it cannot pull the image from ECR.
+4. To let the nodes in the private subnet communicate with other AWS services without using internet we will have to implement VPC endpoints.
+
+
+
+
