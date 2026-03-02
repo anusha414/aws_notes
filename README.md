@@ -2,7 +2,7 @@
 
 VPC(Virtual Private Cloud):- (Video:- https://www.youtube.com/watch?v=P8g7Z4NYk3Q)
 
-what is VPC, 
+what is VPC
 
 
 what is VPC compare it to a physical data ceneter
@@ -46,6 +46,44 @@ Important notes for EKS & VPC:-
 3. If a node on which the pod is asigned is in private subnet, then u will get "imgpullbackoff" error because the node does not have access to internet so it cannot pull the image from ECR.
 4. To let the nodes in the private subnet communicate with other AWS services without using internet we will have to implement VPC endpoints.
 
+There is a project for this refer AV videos.
 
+AWS Lambda:-
 
+AWS Lambda is a serverless compute service from Amazon Web Services that lets you run code without provisioning or managing servers.
+You just upload your code, and Lambda runs it automatically in response to events.
+⸻
+🔹 How It Works (Simple Explanation)
+1. You write code (Node.js, Python, .NET, Java, etc.).
+2. You upload it to Lambda.
+3. An event triggers it (like an API call, file upload, or message in a queue).
+4. Lambda automatically:
+• Allocates compute
+• Runs your function
+• Scales up/down
+• Charges only for execution time
+You don’t manage EC2, OS, scaling, or patching.
+AWS Lambda
+AWS Lambda is a serverless compute service from Amazon Web Services that lets you run code without provisioning or managing servers.
+You just upload your code, and Lambda runs it automatically in response to events.
 
+🔹 What Actually Happens Behind the Scenes?
+When a request comes:
+1. Lambda spins up a lightweight runtime environment.
+2. Your function runs.
+3. After execution:
+• If no more traffic → resources are released.
+• If more traffic → Lambda creates multiple parallel environments automatically.
+This is called serverless, but servers still exist — you just don’t manage them.
+
+Lambda Video:- https://www.youtube.com/watch?v=XFGSuj83wdc&t=1262s
+
+NOTE:- when creating Lambda you just specify which framework you want to use eg:- python nodejs, you dont specify anything else.
+1. When you are using lambda, creating lambda_handler is very important.
+2. There are multiple ways you can do code deployment to Lambda.
+3. way1:- Directly in the AWS lambda UI itself you can create your code with handler event.
+4. way2:- U have to create a zip file(eg:- if it is for python zip all the necessary libraries by installing them using pip) and upload it in the Lambda funtion, make sure the handler has the .py name and the handler function name same as ur code.
+5. way3:- you can upload ur zip file from s3 buckets.
+6. Lambda function URL:- if you want the lambda to be accessible via URL you have to enable this. either with publci access or IAM access.
+7. Environment Variable:- you can setup environment variables for ur lambda.
+8. Layers(Library):- if you want same code to be deployed on multiple lambda then use this concept
