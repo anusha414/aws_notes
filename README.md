@@ -94,6 +94,7 @@ NOTE:- when creating Lambda you just specify which framework you want to use eg:
 8. Layers(Library):- if you want same code to be deployed on multiple lambda then use this concept
 
 Note:-
-whenever you want to deploy code to AWS lambda using its console then you cannot install any external libraries like "requests" because AWS does not run any pip install for u. Few codes run without any issue in Lambda because it comes with some pre-installed libraries when we create lambda for python runtime.
-So, if u want to make use of external libraries the u should deploy ur code via zip, because whenever AWS finds "import requests" it will search in the zipped folder if it is present or not.
-whatever is mentioned in the handler will be executed that partivular .py handler will be executed.
+1. whenever you want to deploy code to AWS lambda using its console then you cannot install any external libraries like "requests" because AWS does not run any pip install for u. Few codes run without any issue in Lambda because it comes with some pre-installed libraries when we create lambda for python runtime.
+2. So, if u want to make use of external libraries the u should deploy ur code via zip, because whenever AWS finds "import requests" it will search in the zipped folder if it is present or not.
+3. whenver lambda execute it uses handler if the handler is like "app.lambda_handler", it will go to app.py and it will execute the function lambda_handler"
+
