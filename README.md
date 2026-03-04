@@ -51,6 +51,8 @@ There is a project for this refer AV videos.
 AWS Lambda:-
 
 AWS Lambda is a serverless compute service from Amazon Web Services that lets you run code without provisioning or managing servers.
+AWS will take care of infrastructure, scaling and load balanacing and availabilty.
+It will charge only for execution time.
 You just upload your code, and Lambda runs it automatically in response to events.
 ⸻
 🔹 How It Works (Simple Explanation)
@@ -61,11 +63,9 @@ You just upload your code, and Lambda runs it automatically in response to event
 • Allocates compute
 • Runs your function
 • Scales up/down
+. It manages avaialabilty in multiple AZ by default.
 • Charges only for execution time
 You don’t manage EC2, OS, scaling, or patching.
-AWS Lambda
-AWS Lambda is a serverless compute service from Amazon Web Services that lets you run code without provisioning or managing servers.
-You just upload your code, and Lambda runs it automatically in response to events.
 
 🔹 What Actually Happens Behind the Scenes?
 When a request comes:
@@ -76,6 +76,11 @@ When a request comes:
 • If more traffic → Lambda creates multiple parallel environments automatically.
 This is called serverless, but servers still exist — you just don’t manage them.
 
+Using Lambda
+• Resize product images on upload
+• Send email after order placed
+• Generate invoice PDFUsing Lambda
+
 Lambda Video:- https://www.youtube.com/watch?v=XFGSuj83wdc&t=1262s
 
 NOTE:- when creating Lambda you just specify which framework you want to use eg:- python nodejs, you dont specify anything else.
@@ -84,6 +89,10 @@ NOTE:- when creating Lambda you just specify which framework you want to use eg:
 3. way1:- Directly in the AWS lambda UI itself you can create your code with handler event.
 4. way2:- U have to create a zip file(eg:- if it is for python zip all the necessary libraries by installing them using pip) and upload it in the Lambda funtion, make sure the handler has the .py name and the handler function name same as ur code.
 5. way3:- you can upload ur zip file from s3 buckets.
-6. Lambda function URL:- if you want the lambda to be accessible via URL you have to enable this. either with publci access or IAM access.
+6. Lambda function URL:- if you want the lambda to be accessible via URL you have to enable this. either with public access or IAM access.
 7. Environment Variable:- you can setup environment variables for ur lambda.
 8. Layers(Library):- if you want same code to be deployed on multiple lambda then use this concept
+
+Note:-
+whenever you want to deploy code to AWS lambda using its console then you cannot install any external libraries like "requests" because AWS does not run any pip install for u. Few codes run without any issue in Lambda because it comes with some pre-installed libraries when we create lambda for python runtime.
+So, if u want to make use of external libraries the u should deploy ur code via zip, because whenever AWS finds "import requests" it will search in the zipped folder if it is present or not.
