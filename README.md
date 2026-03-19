@@ -98,3 +98,13 @@ Note:-
 2. So, if u want to make use of external libraries the u should deploy ur code via zip, because whenever AWS finds "import requests" it will search in the zipped folder if it is present or not.
 3. whenver lambda execute it uses handler if the handler is like "app.lambda_handler", it will go to app.py and it will execute the function lambda_handler"
 
+Load Balancers:-
+How a packet travels from client(browser) to server, and response is sent back to client? it is done using 7 OSI layers, the traffic flow happens in 7 different layers.
+1. when a user click on any url like "linkedin/av" in any browser they have initiated a http request, It is called Application Layer(L7),It says what kind of protocol u want to use to talk to the server or access the server.(HTTP, FTP, SMTP)
+2. Presentation layer(L6):- should request i initiated be a secure request or it can be insecure request. for secure request it must be a SSL/TLS based request, SSL is deprecated, takes care of encryption/encoding the request.
+3. Session Layer(L5):- creating a session objects, contains details like user, when the request was initiated all those details.
+4. Transport Layer(L4):- Request is split into mutliple packets, amd makes the all the packets are sent in a secure way to the server.
+5. Network Layer(L3):- request goes from multiple routes to the data center.
+6. Data Link Layer(L2):- The final route will then be sent to data center.
+7. Physical layer(L1):- 
+
