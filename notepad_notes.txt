@@ -1,0 +1,589 @@
+what is cloud?
+10-15 years ago there were physical data center(buy servers and do the setup).
+without virtualization or AWS we can deploy only one application and other resources(ram,cpu) are wasted.
+with virtualization we can create multiple virtual servers on a single physical machine so all its resources are utilized and share the IP address of these virtual servers to other ppl who are in diff location and they can access these virtual servers virually and this concept is called cloud.
+system administrators are maning this.
+
+Private Cloud:- above concept is example for private cloud only ppl of your organization can access those servers.
+
+Public Cloud:- AWS, Azure, GCP
+useful for startup and middle scale organizations.
+is our data secure when we create instances in public cloud?
+yes, because we create instances in VPC and VPC has NACL and Security groups.
+
+why public cloud is popular?
+because it is pay-as-you-go.
+No need of maintainence.
+u can go global in minutes.
+
+why AWS better than others?
+AWS is first commer in market.
+
+1. Cloud repatriation(are ppl moving back to On-premise from public cloud)
+1%-2%, reason is security, cost optimization,
+
+IAM:-
+IAM is a aservice that is provided by AWS to provide access to mutiple people to the single AWS account and control who can access what
+
+IAM provides authenctication and authorization.
+IAM has 3 identies:- user,groups,roles
+users comes under authentication.
+Policies provide authorization.
+Roles are nothing but permissions that are given for a AWS service/resource to access another AWS service but they must be assumed by the AWS resources
+Roles are useful when someone who is not part of AWS account wants to access it because for roles temporary user n pwd are created. eg:- a ec2 service in AWS1 want to communcation with S3 service in AWS2
+User is part of AWS account and have permanent user n pwd
+IAM user without policy cannot do anything.
+Root user can use all services and has access to everything in AWS.
+
+ARN(Amazon resource name):-
+ARN (Amazon Resource Name) is a unique identifier used by AWS to identify any AWS resource.
+Think of it like a full address for a resource inside AWS.
+
+PowerUserAccess in AWS:-
+
+Official doc:- https://docs.aws.amazon.com/aws-managed-policy/latest/reference/PowerUserAccess.html
+-> PowerUserAccess in AWS is a set of permissions that allows users to manage most AWS resources, but with certain restrictions related to user access and permissions.
+
+Key Points:
+->What it allows:
+1. Full access to AWS services and resources (e.g., EC2, S3, RDS, Lambda).
+2. Ability to create IAM roles and attach policies to those roles.
+-> What it doesn't allow:
+1. Cannot create or manage IAM users or groups.
+2. Cannot assign roles or policies to IAM users or groups (you can't control user access).
+
+ELB:-
+
+there are Round robin, nginx,f5 loadbalancer
+
+How a packet travel from client to server(7 layers of OSI)
+
+S3:-
+very easy to use and solves the common problem of storage
+highly scalabel 99.99% availability and 11 9's reliable(1 billion amount of objects over 100 years, then only 1 object can be lost) and highly secure and cost effective and performance.
+In s3 bucket we can store any kind of data and any amount of data, but each object in s3 cannot be more than 5TB.
+Bucket name should be unique.
+s3 supports bucket versioning which means you can store multiple copies of same file in the same object but in version in tab u can find multiple copies
+# aws_notes
+S3
+1. s3 is a storage service that is provided by AWS.
+2. If you run out of storage on your mobile or laptops , you basically buys a harddisk(pendrive) ans transfer ur data to that.
+3. In case of large oranizations they use storage provided by Public clouds.
+4. Simple Storage Service is a scalable and secure cloud storage service provided by Amazon Web Services (AWS). It allows you to store and retrieve any amount of data from anywhere on the web.
+5. what can you store in S3?
+files, images, videos, logs, databases, csv files.
+6. S3 data is globally accessible by using https, along with bucket name and the object name.
+7.Bucket are tied to the region but the data inside the bucket is globally accessible and you can even block the public access.
+8. s3 provides 11 9's availabilty, it is actually acheived because AWS replicates the data in multiplt AZs and multiple data aceneters and multiple regions.
+8. Advantages of S3, avaialabilty, durability, scalabiltity, security, cost effective and performance.
+9. It is highly scalable but the only restriction is that a single objcet cannot be more than 5TB in size.
+11:- Bucket versioning and Bucket permissions
+10:- Bucket Policy:-
+If you want to restrict the users to access the objects in ur bucket then this is useful. So,even if they have access to the S3policy but they will be restricte in the ducket policy of the s3
+11. You can select the storage class while uploading then object.
+12. lifecycle rules:-  lifecycle rules to define actions you want Amazon S3 to take during an object's lifetime such as transitioning objects to another storage class, archiving them, or deleting them after a specified period of time
+
+y s3, types of data, advantages, bucket versioning, policied, block public access, lifecycle rules
+
+Video:- https://www.youtube.com/watch?v=DiWWPo2Qoso&t=3332s
+
+permissions for bucket:-
+we can restrict who can access the bucket objects in your organization/aws account.
+If they have access to s3 they can access the buckets r else they cannot access
+Bucket->Permission->Bucket policies->edit->write the permission in json .
+
+NOTE:- AWS resources are basically created in regions but can be accessible globally just that there will be latency difference
+
+VPC
+
+Every region in AWS has a VPC by default.
+Every AZ in AWS has a subnet by default and these subnets are public subnets.
+there is a default Internet gateway, route tables, NACL and security group.
+
+whenever we create custom VPC it will create a route table, NACL and security group by default.
+whenver we create subnet, by default the subnet is private and it will create route table.
+if you want to make a private subnet to a public subnet you will have to add a rule in the routing table that has routng to internet gateway.
+
+
+NACL(network access control list):-
+
+This will be created by default whenever you create a VPC and it will allow all inbound and outbound traffic by default.
+you can create a custom NACL  and associate it with a subnet and custom NACL denies all inbound and outbound traffic by default.
+If you do not explicitly create Network ACL, then the default Network ACL automatically associated with the subnet.
+You can associate multiple subnets with a Network ACL. However, a subnet can be associated with the single Network ACL at a time.
+NACL is at VPC level or subnet level
+
+NAT gateway:-
+
+If the resources in private subnet has to communicate with internet, then add a rule in the route table of private subnet to direct the traffic to nat gatewaty.
+create a nat gateway in public subnet.
+Actions has below options:-
+1. Manage tags
+2. Delete tags
+
+
+VPC peering:-
+
+If you want VPC to communicate with each other privately then you have to go for peering connections in AWS.
+this lets your VPC to communicate with other VPC in the same region or different region or from different AWS account.
+the owner of VPC 1 will send request to VPC2 and owner of VPC2 should accept the request the only both VPCs can communicate with eachother.
+Once the request is accepted add a rule in the routetable of both VPCs that is the name of peering connection so that they can communicate with each other.
+In actions of peering connection we have option:-
+1. accept request
+2. delete request
+3. delete peering connection.
+4. add/edit tags
+Transitive peering is not allowed means if VPC1 can communicate with VPC2 and VPC2 can communicate with VPC3, then VPC1 cannot communicate with VPC3 via VPC2.
+If you want VPC1 to communicate with VPC3 then create a peering connection between them.
+
+https://docs.aws.amazon.com/vpc/latest/peering/what-is-vpc-peering.html
+
+AWS Direct Connect
+
+VPC end point:-
+
+we have ec2 instance which contanstly uploads contents to s3 buckets the mode of comminication between these 2 is internet.
+how about we have a dedicated channel for the services in the same region to communicate with eachother, so only vpc endpoint came into picture.
+
+read self notes
+https://aws.amazon.com/jp/vpc/features/
+
+subnet:- subnet is used to divide resources in a VPC into public resources and private resources.
+
+Route tables:-
+route tables are associated with public, private subnet and VPC.
+route tables have set of rules which helps us to reach our destination server where our application is hosted
+2
+
+
+CloudFront:-
+
+It is a service that provides solution for CDN(content delivery network).
+we use CDN on daily basis when we access apps such as insta,youtube,amazon.
+eg:- let us consider a video and image sharing platform such as instagram to understand CDN.
+a person from Australia uploads a image/video on instagram and the image is copied to central storage system of instagram.
+anyone from the world now can access the image once it is uploaded to instagram via central storage system.
+let us assume the central storage system is in US.
+If the people in India have to access the image uploaded by Australia guy as they have to face multiple routers there will be high latency compared to ppl in USA.
+for this problem the solution is CDN.
+
+what CDN does?
+CDN creates local copies of data stored in central server.
+that new copy of data is stoted in edge location.
+If the person in India wants to access instagram it will direct to edge location instead of directing to central location.
+
+why CDN and not s3?
+s3 is a object based storage to store static files such as images/videos.
+If we try to directly access data from s3 buckets it will result in security issues as we will have direct access to the content and cost and latency issues.
+If we use CDN it creates a copy of data in s3 buckets to the edge location.
+
+creation in AWS:-
+
+CloudFront--->create distribution
+origin domain:- need to give the s3 bucket name
+name:- it is auto-generated
+origin access:- 1. public, 2. origin access control settings 3. legacy access identifiers:- basically a link created to  access the content in your s3 bucket via CDN and enable this in bucket policy 
+
+Does creation of one ditribution copy data to all edge locations or the locations we specify? copies to all edje locations
+https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/HowCloudFrontWorks.html#HowCloudFrontWorksContentDelivery
+
+Regional Edge caches:-
+ Regional edge caches have a larger cache than an individual POP, so objects remain in the cache longer at the nearest regional edge cache location. This helps keep more of your content closer to your viewers, reducing the need for CloudFront to go back to your origin server, and improving overall performance for viewers.
+
+Route53:-
+
+It provides DNS as a service.
+DNS is Domain Name System.
+On a day-to-day basis we use DNS.
+EC2 instances or ELB have IP addresses assigned to them but we dont use this IP address when we want to access those applications but we use Domain Names(amazon.com).
+DNS converts/maps Domain Names to IP address of ELB/EC2.
+
+Why are we using Domain Names to access the application and why are we not using the IP addresses?
+1. IPaddress are difficult to remember, if you want to access some application you should use IPaddress.
+2. IPaddresses are not static and they get changed
+
+What does DNS do?
+DNS keeps a lot records for mapping Domain names to IPaddress.
+
+Why we need Route53?
+without Route53 if you have some application for which you want to create Domain Name, you should buy a Domain Name in GoDaddy and we need a Hosting solution and DNS records has to be maintined.
+All this is complicated and we will simply use Route53.
+
+Route53 supports below 2 things:-
+
+1. Domain Registration:- supports for buying the Domain Names.
+2. Hosted Zones:- Contains DNS records, each record will have Domain name and its associated ELB IP address.
+3. Health checks:- performs health checks on web servers
+
+AWS DynamoDB:-
+
+It is fully managed service and it can handle heavy traffice by serving 0.5 million requests per second.
+
+Capacity Modes in DynamoDB:-
+
+1. How does DynamoDB scale a table?are there limits?
+Data is stored in DynamoDB in tables.
+3 things are required when we create Table:- name of the table, Primary Key and billing mode.
+Multiple copies called partitions of the same table will be stored in multiple AZ for high availabilty and durabililty and low latency.
+There is a limit but the limit is very high that we dont have to worry about it.
+
+ECR(Elastic Container Registry):- Video source:- AV
+ECR is an aws service that is used to store and manage containers.
+It is a container registry used to store docker images similar to dockerhub.
+Elastic means that particular service is highly scalable and highly available in nature.
+
+why do we need container registries like ECR or dockerhub?
+Its because let us assume u have created docker images in ur local machines and wants other ppl to use it, then in that case you can upload the images from ur local machine to container registries.
+
+ECR vs Dockerhub:-
+
+Dockerhub is majorly used as a public repository.
+It even supports private repository but the issue is if you have 1000 users in ur organization that wants to access dockerhub private repository than 1000 separate accounts must be created and access must be provided.
+
+ECR is majorly used as a private repository.
+ECR supports private registry where you can create repositories and public registry
+If you organization is already using aws then IAM users would have already been created, all you have to do is just attach the ECR policy/roles to that IAM uses who wants to access ECR.It easily integrates with other AWS services.
+Notes:- https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/day-20
+docker tag <source_image> <target_image>:- The docker tag command is used to create a new tag (or alias) for an existing Docker image
+
+559050223198.dkr.ecr.us-west-2.amazonaws.com/dso-sb-ecr01
+Demo for ECR creation:-
+
+step 1:- select the region where you want to create ECR
+step 2:- search for ECR, select "repositories" to check existing container registry, select "private registry" to create a new one.
+step3:- give the name of the ECR, Mutable and AES-256 for a very generic ECR creation.
+
+Ecr uri:-
+ECR URI is the unique address used to locate and pull/push container images.
+Lifecycle policies:-
+With lifecycle policies, you can automatically clean up unused images in your repositories based on rules that you define. When an image meets your policy rules, the action is taken within 24 hours.
+Permissions:-
+JSON‑based resource policies that control who can access the repository and what actions they can perform.
+According to AWS, Amazon ECR uses resource‑based permissions to control access to repositories.
+Resource based policy:-
+AWS confirms that resource-based policies let the resource itself specify who can access it and what actions they can perform.
+
+NOTE:- 
+AWS ECR uses two layers of permission checks, and BOTH must allow the action:
+ECR repo policy (resource-based policy):- repository tells who can access it
+        AND
+IAM identity policy (your role’s permissions)
+If permissions tab is empty then whoever has access to ECR repo can access the image if they hae neccessary policies attached to them.
+
+What happens if two images have the same tag?
+• The latest pushed image overrides the tag
+• Old image still exists but becomes untagged
+⸻
+9️⃣ What are untagged images?
+Images that don’t have any tags attached.
+• They still occupy storage
+• Usually created when tags are overwritten
+
+EKS:-
+It is a managed k8s offering by AWS.
+Without EKS, there are 2 ways to setup k8s cluster in AWS using Kubeadm and Kops.
+
+eg1:- setup using kubeadm
+I want a 3 master node and 3 worker node k8s cluster, then i will create 6 EC2 instances in AWS and install the configuration that is required for each node.
+for master node, configure APIserver, ETCD, controller,scheduler etc.
+for worker node, install, Container runtime, kuber proxy etc.
+setting up all this in AWS all by yourself might seem easy but sometimes it can be error prone.
+
+eg2:- setup using kops
+using kops the setup is easy compared to kubeadm because kops takes care of all the configuration installing.
+But the things that it does not take care if master node or scheduler , api server goes down, ETCD crashed or any other issue with the configuration of the nodes you r responsible.
+kops is just responsible for creating the k8s cluster.
+To debug all these issues when there are 100s 1000's of servers, it is little hectic for the devops engineer.
+
+EKS provides highly available control plane/master node.
+When you request for EKS cluster,It is responsible for installing the configurations in the control plane and managing them.
+Though it is managed control plane it is responsible for integrating worker nodes with master node.
+
+AWS provides 2 option with respect to worker nodes.
+option1:- u can create EC2 instances and manage them.
+option2 :- you can use Fargate(AWS serverless compute) just like lambda functions.
+lambda functions are for smaller workload whereas fargate can be used to deploy containers.
+
+Use EKS to create control planes and Fargate to create worker node for highly available and robust k8s cluster.
+
+EKS Cluster Creation:-
+1. whenever you are creating EKS cluster via console or cli make sure that the role/user using which you are creating EKS cluster has neccessary permissions like create cluster etc.
+2. cluster IAM role(permissions for controlplane to access the AWS resources):- The EKSClusterRole is like a permission slip that allows your Kubernetes cluster to do its job in AWS. It grants the cluster the necessary rights to interact with other AWS services (like EC2, VPC, and CloudWatch) to perform tasks like networking, logging, and scaling. Without it, your EKS cluster wouldn’t be able to function properly, just like a worker without the right permissions to access necessary tools and resources.
+AmazonEKSBlockStoragePolicy
+AmazonEKSClusterPolicy
+AmazonEKSComputePolicy
+AmazonEKSLoadBalancingPolicy
+AmazonEKSNetworkingPolicy
+3. NodeIAMrole(permissions for worker nodes to access AWS resources):- For example, if your Kubernetes pods running on the worker nodes need to download a file from an S3 bucket, the worker node needs permission to access S3. That permission comes from the NodeIAMRole. eg:- If You are creating pods using Image from ECR then it must have those policy attached.
+4. select the VPC and subnets where you want to place the EKS cluster resources.
+5. Once the EKS cluster is created, you can access the EKS cluster directly from the AWS console as you created it and have administrator access(selected) during creation.
+6. If any other role has to access the EKS cluster, you must attach policies(EKSclusterpolicy, describe clusters) and add the role in the "access entries" tab of the EKS cluster.(if authentication mode is EKS API). 
+If authentication mode is only ConfigMap then we need to update aws-auth configMap
+
+KUBECONFIG IN DETAIL:-
+Video:- https://www.youtube.com/watch?v=oMkeRKU4BwM
+In AWS EKS (Elastic Kubernetes Service), a kubeconfig file is used to configure access to Kubernetes clusters. This file contains the necessary configuration information for the kubectl command-line tool to communicate with the API server of a cluster.
+
+1. kubectl is the command line utility to interact with EKS cluster API server which in turn communicates with other components.
+2. How will the kubectl know to which EKS cluster/API server  it should communicate?
+Here where kubeconfig comes into picture.
+3. whenever we create a k8s cluster a kubeconfig file will be created in the location $HOME/.kube/config
+4. Clusters:- contains the list of clusters, their names and certificates.
+5. Users:- whenever we create a cluster, a admin will be created those details will be present here.
+6. Context:- mapping users to a specific cluster 
+7. If you have multiple clusters in kubeconfig file, you can use some "kubectl config use-context <context-name>" commands to switch to a required cluster. or use 
+aws eks update-kubeconfig --region us-west-2 --name dso-sb-eks-cluster01.
+8. current-context in config file is the current cluster details that kubectl is using to communicate with the cluster API server.
+
+apiVersion: v1
+clusters:
+- cluster:
+    server: https://<cluster-endpoint>
+    certificate-authority-data: <base64-encoded-ca-cert>
+  name: <cluster-name>
+contexts:
+- context:
+    cluster: <cluster-name>
+    user: <user-name>
+  name: <context-name>
+current-context: <context-name>
+kind: Config
+preferences: {}
+users:
+- name: <user-name>
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      command: aws
+      args:
+        - "eks"
+        - "get-token"
+        - "--cluster-name"
+        - "<cluster-name>"
+      # Optional: specify the AWS profile to use
+      env:
+        - name: AWS_PROFILE
+          value: "<aws-profile>"
+
+Kubernetes RBAC(Role Based Access Control):-
+To achieve RBAC we have 4 objects in k8s:-
+1. roles
+2. RoleBinding
+3.ClusterRole
+4. ClusterRolebinding
+
+
+Let's see a demo on how to access the application that is deployed on EKS.
+
+1. I have a k8s cluster with 3 master nodes and 2 worker nodes.
+2. I have deployed an application via the pod using kubectl on one of the worker node.
+3. This application is accessible within the cluster by master node/worker node using cluster IP but end user outside cluster cannot access it.
+4. We can create a service for the pod and expose it to outside user. there are 3 types of services. clusterIP, NodePort, Load Balancer.
+5. If we use cluster IP, it will be accessible only within the k8s cluster.
+6. If we use Nodeport, the outside user can access the application using any IP address of the nodes that are present in the cluster.
+Issue with this is usually applications are supposed to be deployed in the private subnet of a VPC, which means that the only people/nodes that have access or present within the private subnet can access it.
+7. If we go for load balancer, its gonna be very expensive if we have to create 100's of load balancer for 100's of applications.
+8. so the best approach is to go for ingress resource.
+
+Example 
+
+1. we have a worker node where we deployed the pod.
+2. create service for pod either nodeport or clusterIP, ingress supports both.
+3. create a ingress resource.
+4. This ingress will allow the user to access the application inside the EKS cluster. which means the ingress.yml will contain a URL stating that if user requests for this route the traffic to specific service and specific pod.
+5.having ingress resource is of no use, there should be someone who can direct the request from user ro the ingress resource because user cannot directly access ingress resource because it is in public subnet.
+6. here comes the ingress controller which monitors the ingress resource and configures the Application load balancers, nginx load balancer and so on.
+
+AWS Lambda:- Video source :- AV:- https://github.com/iam-veeramalla/aws-devops-zero-to-hero/tree/main/day-17
+It is a compute instance which is serverless.
+who decides whether we should go for EC2 or AWS Lambda:-
+DevOps engineer is not responsible for it, it is basically decided by developers, design and architecture team.
+It mainly depends on how the application has been developed, if the app is developed in a way that it can be deployed in Lambda functions, then developers will tell you to go for Lambda functions.
+Lambda function cannot be created/triggered by themselves, they must be event driven. for eg:- configure a cronjob, or configure in cloudwatch
+What happens when i deploy my app in Lambda function:-
+
+1. Let us assume that you will place an order in Food delivery app.
+2. U placed the order and did the payment.
+3. Lambda function will be created when you want to place the order, it will take care of payment details and the lambda functon will be deleted as soon the payment done.
+
+You can use blueprints that are provided by lambda service to perform specific task (related to security) or u can write code in local, zip it and deploy it.
+
+Cost optimization in AWS:-
+As a devops engineer, we r responsible for cost optimzation, it means that we will basically check the resources that are created and make sure they r in use, if they r not in use we will notify the user who created those resources.
+
+How lambda functions are helpful in cost optimzation?.
+1. let us assume i have written a script in python to check the resources in use and tailed resources.
+2. If we use EC2 to execute it daily at 10am, we have to manually create EC2 instance at 10am, deploy the script, execute it, and take the results and then delete the EC2.
+3. If we use Lambda, we can configure in cloud watch a cronjob, to trigger the lambda functions, once the scripts are executed the lambda function will be deleted by itself which helps in cost optimization.
+
+Key features:
+
+Security/compliance:- using lambda not to create particular resources
+Serverless: No need to manage or scale servers.
+Automatic Scaling: Lambda automatically scales up or down depending on the number of requests.
+Pay-per-Use: You only pay for the compute time you consume.
+Event-driven: Functions are triggered by events, which can come from AWS services or custom events.
+
+AWS secret Manager
+
+
+
+
+AWS code commit:-
+
+Using AWS managed services like AWS code commit, AWS code pipeline, AWS codebuild and AWS codeDeploy we can implement CI/CD on AWS without using any external or third party services like Jenkins, github or gitlab CI etc.
+
+In general whatever we are using in github, gitlab, they are public repositories, when u r working with organizations you will not use public repos, you will either use private repos, enterprise editions, or install github/gitlab on your server and configure them within your organization.
+To solve this problem of managing the git servers and scaling them, AWS came up with managed service called AWS code commit.
+
+1. for hosting source code instead of using Github,gitlab or gerrit, AWS provides AWS codecommit.
+2. for jenkins pipeline, we can use AWS codepipeline.
+3. you can use AWS codebuild instead of Maven or any other code build tools.
+4. Instead of shellscript, you can use codedeploy.
+5. Advantages of codecommit is it's managed git(download the gitlab and install it on some EC2 instances ), scalability and reliable.
+
+Demo for codecommit:-
+
+1. search for codecommit->create repository
+2. You can either clone the repository to ur local and upload commits or you can directly upload files from the AWS UI itself and add commit message in UI.
+3. AWS codecommit repository supports pullrequets, commits, branches and tags just like github.
+4. we are using terminal or VS code because using AWS UI we can edit or add only one file at a time.
+
+Note:- To use AWS codecommit, it is always suggested to use IAM user instead of root account, because root account does not support SSH and policy used is AWScodecommitpoweruser.
+
+Diadvantages of AWScodecommit:-
+
+1. very less features when compared to other version control repos.
+2. AWS restricted.
+3. less integration with services outside AWS.
+
+Explantion:- start with AWScodecommit, general CI/CD outside AWS, general source code repos(github, gitlab etc), private repos, public repos, install git, AWS Demo,disadvantages.
+
+AWS codepipeline:-
+
+This is similar to Jenkins but it is a managed AWS service.
+
+Usual CI/CD with jenkins:-
+1. whenever there is a code push to a github repostory, and it is connected to Jenkins via webhook, what happens is it implements CI and invokes CD.
+2. CI will have multiple steps such as, checkout, Build and unit tests,codescan(sast), Image build, Image scan, Image push.
+3. Using CD tools such as shellscripts, argo CD,Gitops we can implement CD.
+
+CI/CD with AWS managed services:-
+1.whenever there is a code push to a AWS code commit, and it is connected to AWS code pipeline via webhook.
+2. Every single commit push will invoke CI and then CD
+3. AWS codebuild is used to implement CI.
+4. AWS codedeploy is responsible for CD part and deploy apps to k8s or AWS EC2.
+
+Note:- codepipeline can be used to implement CI too.
+
+why should we prefer codepipeline over open source Jenkins:-
+1. when you are using Jenkins, you have to setup worker nodes for your pipelines, as the pipelines increase, you must setup new worker nodes.
+2. your organization is responsible for managing those worker nodes and making sure they are always up and ready execute the jobs.
+
+To avoid using codepipeline, what you can do is you can create EC2 instance and setup autoscaling and install jenkins in it.
+
+Note:- AWScodepipeline is only restricted to AWS, if we want to move the pipelines to Azure we cannot move the existing codepipelines,
+jenkins pipelines can be reused.
+
+Continuous Integration in AWS using AWS managed services:-
+
+we will use github instead of AWS code commit.
+
+step1:- setup codecommit using github, means create a github account, create a repository and put all the code in the github repository.
+step2:- create a AWS codebuild, go to AWS codebuild->create build project, provide required details like what source provider(github), public or ur own repo and etc.
+Environment image:- chose the environment image for you code build(OS, and etc), if we are using jenkins then for build purpose we would chose the worker nodes and those worker nodes would have specific OS and runtimes.
+service Role:- for AWScode build to perform actions on AWS services it will need Roles, so, we have to configure "service role", create a new role for "codebuild" and later assign policies to it "SSMfullaccess"
+Build Spec:- Just like how we write the actions(checkout,build,scan) in github similarly it must be written for codebuild in this build spec
+
+NOTE:- AWS systems manager is the one where we store our passwords just like we store the passwords as screts in github actions
+
+step 3:- go to systems manager->parameter store->create parameter
+parameter name:- <app_name>/<docker_credentials>/<parameter_name>.
+As long as codebuild is not integrated with "codepipeline" we have to trigger the build manually.
+If codepipeline id integrated with codebuild, then whenever there is a commit push to the repo, build will be triggered automatically.
+
+step4:- go to codepipeline->give the name, role and source provider(github), give github details and codebuild details.
+
+
+Example: Let’s say you have three VMs in an Availability Set: VM1 (running App1), VM2 (running App2), and VM3 (running App3). These VMs are spread across 3 Fault Domains. If Fault Domain 1 (where VM1 is located) experiences a hardware failure, the VMs in Fault Domain 2 and Fault Domain 3 (VM2 and VM3) will still be available. The other VMs are unaffected by the hardware issue, so your App2 and App3 continue to run, reducing the total impact on your overall system.
+Yes, in an Availability Set, the VMs are typically deployed within the same Azure region but not necessarily in the same Availability Zone
+
+An Availability Zone (AZ) is essentially a physical data center within an Azure region. Each zone has its own independent power, cooling, and networking, so they are designed to be isolated from each other to avoid a single point of failure. However, all zones within a region are still connected by a high-speed network.
+
+1. Single VM with Availability Zones:
+Scenario: You deploy VM1 in Zone 1.
+What happens:
+If Zone 1 fails (due to power outage, hardware failure, etc.), VM1 will go down.
+There's no automatic failover to Zone 2 or Zone 3 because it's a single VM.
+Benefit: Infrastructure-level protection for Zone 1 (e.g., in case of a physical data center failure in that zone). But no automatic recovery for the VM itself.
+
+
+
+2. Creating a Single VM (Not Possible Across Multiple Zones):
+If you're trying to create a single VM and attempt to select Zone 1, Zone 2, and Zone 3 during creation, this won't work because a single VM can only exist in one Availability Zone.
+You can only select one zone (e.g., Zone 1 or Zone 2 or Zone 3) for a single VM.
+What happens:
+Single VM will only be deployed in the zone you selected.
+You cannot span a single VM across multiple zones.
+
+some useful commands
+
+1. aws configure
+2. aws sts get-caller-identity
+
+
+Assume Role in AWS:-
+In AWS, AssumeRole is a feature that allows an AWS Identity and Access Management (IAM) entity (like a user, service, or application) to temporarily take on the permissions of another IAM role.
+Video:- https://www.youtube.com/watch?v=MkiWa31iV6U&t=386sF
+
+AKS(Azure Kubernetes Service):-
+
+Note:- Install AWSCLI and, do aws configure and install kubectl.
+
+Some important points:-
+
+1. I have a VPC with private subnet and the nodes of my cluster are deployed on private subnet. And they must fetch the image from ECR to deploy the application, but they are unable to fetch it because of "errimgpull" or "imgpullbackoff" because the node failed to fetch the image from ECR because private subnet does not have access to internet. To solve this issue you must create vpc endpoints so that your node can pull the image from ECR even though its in private subnet.
+
+2. I want to upload a data to s3 bucket, and the data is encrypted with KMS key, so now only the users with specific permissions  can access the data.
+If someone want to upload the data or access the data, they must have kms and s3 policies attached or else they will get errors.
+
+MS SQL:-
+the backup format is ".bak"
+
+Azure SQL:-
+the backup format is ".bacpac"
+
+BACPAC files and Azure SQL server:-
+search for "SQL Databses"
+Video:- https://www.youtube.com/watch?v=kWgk0kWfViE
+
+BACPAC files are a type of file used primarily in Microsoft SQL Server and Azure SQL Database. Here's a breakdown of what they are and how they're used:
+
+🔹 What is a BACPAC File?
+A BACPAC file is a ZIP file with a .bacpac extension that contains:
+
+Database schema (tables, views, stored procedures, etc.)
+Data from the database (in JSON format)
+It is used to export and import databases, especially for backup, migration, or archiving purposes.
+
+🔹 Common Use Cases
+Database Migration
+Move a database from:
+
+On-premises SQL Server to Azure SQL Database
+One Azure SQL instance to another
+Backup and Restore
+Create a lightweight backup of the database schema and data.
+
+Archiving
+Store a snapshot of a database for long-term retention.
+
+🔹 How to Create and Use BACPAC Files
+Create a BACPAC:
+
+Using SQL Server Management Studio (SSMS): Right-click the database → Tasks → Export Data-tier Application.
+Using Azure Portal: Export an Azure SQL Database to a BACPAC file stored in Azure Blob Storage.
+Import a BACPAC:
+
+In SSMS: Right-click on "Databases" → Import Data-tier Application.
+In Azure Portal: Import into a new Azure SQL Database.
