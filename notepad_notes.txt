@@ -587,3 +587,9 @@ Import a BACPAC:
 
 In SSMS: Right-click on "Databases" → Import Data-tier Application.
 In Azure Portal: Import into a new Azure SQL Database.
+
+AWS RDS:-(Video:- https://www.youtube.com/watch?v=rM_c7K0-tC0)
+1. It is relational database server as a service
+2. It supports my MySQL, mariadb, oracle, postgresql, microsoft sql
+
+
