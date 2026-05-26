@@ -300,11 +300,34 @@ When you request for EKS cluster,It is responsible for installing the configurat
 Though it is managed control plane it is responsible for integrating worker nodes with master node.
 
 AWS provides 2 option with respect to worker nodes.
-option1:- u can create EC2 instances and manage them.
-option2 :- you can use Fargate(AWS serverless compute) just like lambda functions.
+option1:- u can create EC2 instances and manage them and attch it to eks cluster using some bootstrap script. nodes visible in the compute section of eks
+option2:- create nodegroups directly in the AWS, AWS will create EC2 instances, install the required configuration and manges them, visible in compute section of eks
+option3 :- you can use Fargate(AWS serverless compute) just like lambda functions. nodes will not be created, not visible in compute section but you can see when u execute "kubectl get nodes"
 lambda functions are for smaller workload whereas fargate can be used to deploy containers.
+Amazon Fargate is a serverless compute engine for containers that runs your pods without requiring you to manage or provision any EC2 instances.
+eksctl create fargateprofile \
+  --cluster my-cluster \
+  --region ap-south-1 \
+  --name fp-default \
+  --namespace default
+EKS schedules pods to Fargate, and AWS automatically provisions invisible compute that is already integrated with the control plane.
 
-Use EKS to create control planes and Fargate to create worker node for highly available and robust k8s cluster.
+Option4:- using karpenter, this must be installed on ur eks cluster after the cluster has been created.
+1. Karpenter is a Kubernetes autoscaler that automatically launches and terminates EC2 instances based on the resource needs of your pods.
+2. these nodes will be visible in the compute section of eks
+
+ Karpenter Flow (Simplified)
+
+✅ You deploy a pod
+❌ Pod goes Pending (no capacity)
+👀 Karpenter detects unscheduled pod
+🧠 It calculates required resources (CPU, memory, instance type)
+🚀 Creates an EC2 instance directly
+🔗 Node joins the cluster
+✅ Pod gets scheduled on the new node
+📉 When not needed → node is drained and deleted
+
+NOTE:- Use EKS to create control planes and Fargate to create worker node for highly available and robust k8s cluster.
 
 EKS Cluster Creation:-
 1. whenever you are creating EKS cluster via console or cli make sure that the role/user using which you are creating EKS cluster has neccessary permissions like create cluster etc.
