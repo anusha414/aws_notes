@@ -328,6 +328,7 @@ Option4:- using karpenter, this must be installed on ur eks cluster after the cl
 📉 When not needed → node is drained and deleted
 
 NOTE:- Use EKS to create control planes and Fargate to create worker node for highly available and robust k8s cluster.
+NodePool in EKS (with Karpenter) is a configuration that defines how Karpenter should create and manage worker nodes.
 
 EKS Cluster Creation:-
 1. whenever you are creating EKS cluster via console or cli make sure that the role/user using which you are creating EKS cluster has neccessary permissions like create cluster etc.
