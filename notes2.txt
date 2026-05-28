@@ -12,3 +12,6 @@ Structure of ECS:-
 1. You will create a ECS cluster, use either fargate or create EC2 instances to deploy containers.
 2. In k8s we used to create pod yaml to deploy containers, In ECS we will use task definition to deploy the containers.
 3. You can create services to add load balancing capabilities.
+4. ECS is cost effective solution compared to EKS.
+Task role:-
+Task execution role:-
